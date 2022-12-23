@@ -11,7 +11,7 @@ static PYO3_CAPSULE_API_NAME: &std::ffi::CStr =
     unsafe { std::mem::transmute::<_, &std::ffi::CStr>(concat!("pyo3_capsule_api._API", "\0")) };
 static mut PYO3_EXAMPLE_CAPI: *const PyO3Example_CAPI = std::ptr::null();
 
-#[pyclass]
+#[pyclass(module = "pyo3_capsule_api", name = "PyExample")]
 #[repr(C)]
 struct PyExample {
     inner: i64,

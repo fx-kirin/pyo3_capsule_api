@@ -13,7 +13,7 @@ from add_parent_path import add_parent_path
 import pyo3_capsule_api
 
 with add_parent_path():
-    import pyo3_capsule_user
+    import pyo3_capsule_user.rust_binding
 
 
 def setup_module(module):
@@ -33,7 +33,10 @@ def teardown_function(function):
 
 
 def test_func():
-    pyo3_capsule_user.rust_binding.sum_as_string(pyo3_capsule_api.PyExample(0))
+    a = pyo3_capsule_api.PyExample(0)
+    print(a)
+    result = pyo3_capsule_user.rust_binding.sum_as_string(pyo3_capsule_api.PyExample(0))
+    print(result)
 
 
 if __name__ == "__main__":

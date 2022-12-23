@@ -29,7 +29,7 @@ struct PyExample {
 unsafe impl pyo3::type_object::PyTypeInfo for PyExample {
     type AsRefTarget = pyo3::PyCell<Self>;
     const NAME: &'static str = "PyExample";
-    const MODULE: ::std::option::Option<&'static str> = ::core::option::Option::None;
+    const MODULE: ::std::option::Option<&'static str> = Some("pyo3_capsule_api");
     #[inline]
     fn type_object_raw(py: pyo3::Python<'_>) -> *mut pyo3::ffi::PyTypeObject {
         ensure_example_api(py).ExampleType
@@ -107,6 +107,12 @@ impl<'py> FromPyObject<'py> for PyExample {
     }
 }
 
+impl pyo3::IntoPy<pyo3::PyObject> for PyExample {
+    fn into_py(self, py: pyo3::Python) -> pyo3::PyObject {
+        pyo3::IntoPy::into_py(pyo3::Py::new(py, self).unwrap(), py)
+    }
+}
+
 #[inline]
 pub unsafe fn PyExampleAPI() -> *mut PyO3Example_CAPI {
     *PyExampleAPI_impl.0.get()
@@ -140,9 +146,9 @@ pub unsafe fn PyExample_IMPORT() {
 
 #[pyfunction]
 /// Formats the sum of two numbers as string
-fn sum_as_string(a: PyExample) -> PyResult<()> {
+fn sum_as_string(a: PyExample) -> PyResult<PyExample> {
     println!("{:?}", a.inner);
-    Ok(())
+    Ok(a)
 }
 
 /// This module is a python module implemented in Rust.
