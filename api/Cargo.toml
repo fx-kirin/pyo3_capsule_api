@@ -1,0 +1,15 @@
+[package]
+name = "pyo3-capsule-api"
+version = "0.1.0"
+authors = ["fx kirin <fx.kirin@gmail.com>"]
+edition = "2018"
+
+[lib]
+name = "pyo3_capsule_api"
+crate-type = ["cdylib"]
+
+[dependencies]
+
+[dependencies.pyo3]
+version = "0.16.4"
+features = ["extension-module"]
